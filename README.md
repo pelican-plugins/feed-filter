@@ -40,7 +40,6 @@ Usage examples
 
 * Include only posts in some categories into the global feed:
 ```
-#
 FEED_ATOM = 'feed/atom'
 FEED_RSS = 'feed/rss'
 FEED_FILTER = {
@@ -113,4 +112,6 @@ Development
 
 Contributions are welcome and much appreciated. See [CONTRIBUTING.md][] for more information.
 
+[1]: https://docs.python.org/3/library/fnmatch.html "Fnmatch Python module"
+[2]: https://github.com/getpelican/feedgenerator/blob/master/feedgenerator/django/utils/feedgenerator.py#L132 "Feed item attributes"
 [CONTRIBUTING.md]: https://github.com/pelican-plugins/feed-filter/blob/master/CONTRIBUTING.md
