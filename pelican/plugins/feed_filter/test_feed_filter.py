@@ -1,21 +1,19 @@
 # -*- coding: utf-8 -*-
 """Tests for the Feed Filter Plugin."""
-import unittest
 from datetime import datetime, timedelta
-
-from pelican.contents import Article, Category, Author
-from pelican.writers import Writer
-from pelican.utils import get_date
-from pelican.tests.support import get_context, get_settings
+import unittest
 
 import feed_filter
+from pelican.contents import Article, Author, Category
+from pelican.tests.support import get_context, get_settings
+from pelican.writers import Writer
 
 
 class FeedFilterTestBase(object):
     @classmethod
     def setUpClass(cls):
         feed_filter.initialized(None)
-        cls.writer = Writer('.', get_settings())
+        cls.writer = Writer(".", get_settings())
 
     def setUp(self):
         self.reset_settings()
@@ -24,8 +22,8 @@ class FeedFilterTestBase(object):
 
     def reset_settings(self):
         self.context = get_context(get_settings())
-        self.context['SITEURL'] = 'https://somedomain.net'
-        self.context['SITENAME'] = 'Test Sitename'
+        self.context["SITEURL"] = "https://somedomain.net"
+        self.context["SITENAME"] = "Test Sitename"
 
     def create_articles(self, num):
         now = datetime.now()
@@ -33,31 +31,29 @@ class FeedFilterTestBase(object):
             date = now + timedelta(days=-i)
             self.articles.append(
                 Article(
-                    'Some content',
+                    "Some content",
                     metadata={
-                        'Title': 'Title ' + '{:02n}'.format(i),
-                        'Date': date,
-                        'Category': Category('Cat', self.context),
-                        'Tags': [
-                            'TagBecomesCategoryInFeed',
-                            'OtherTag',
-                            'Tag ' + '{:02n}'.format(i)
+                        "Title": "Title " + "{:02n}".format(i),
+                        "Date": date,
+                        "Category": Category("Cat", self.context),
+                        "Tags": [
+                            "TagBecomesCategoryInFeed",
+                            "OtherTag",
+                            "Tag " + "{:02n}".format(i),
                         ],
-                        'Author': Author('Author ' + str(i//10), self.context)
-                    }
+                        "Author": Author("Author " + str(i // 10), self.context),
+                    },
                 )
             )
 
     def create_filtered_feed(self, feed_path):
         self.create_articles(100)
         # setup writer attributes required to create the feed
-        self.writer.site_url = self.context['SITEURL']
-        self.writer.feed_url = self.context['SITEURL'] + '/' + feed_path
+        self.writer.site_url = self.context["SITEURL"]
+        self.writer.feed_url = self.context["SITEURL"] + "/" + feed_path
         # create feed
         self.feed = self.writer._create_new_feed(
-            self.feed_type,
-            'Test feed',
-            self.context
+            self.feed_type, "Test feed", self.context
         )
         # add articles to feed
         for item in self.articles:
@@ -66,109 +62,88 @@ class FeedFilterTestBase(object):
         feed_filter.filter_feeds(self.context, self.feed)
 
     def test_unmatched_feed_path_does_nothing(self):
-        self.context['FEED_FILTER'] = {
-            'feed/global': {
-                'include.title': '*1'
-            },
-            'atom': {
-                'include.title': '*1'
-            },
+        self.context["FEED_FILTER"] = {
+            "feed/global": {"include.title": "*1"},
+            "atom": {"include.title": "*1"},
         }
-        self.create_filtered_feed('feed/' + self.feed_type)
+        self.create_filtered_feed("feed/" + self.feed_type)
         # No article was removed from the feed
         self.assertEqual(100, len(self.feed.items))
 
     def test_only_matched_feed_paths_are_applied(self):
-        self.context['FEED_FILTER'] = {
-            'feed/global': {  # does not match
-                'include.title': '*02'
-            },
-            'feed/*': {  # match
-                'include.title': '*01'
-            }
+        self.context["FEED_FILTER"] = {
+            "feed/global": {"include.title": "*02"},  # does not match
+            "feed/*": {"include.title": "*01"},  # match
         }
-        self.create_filtered_feed('feed/' + self.feed_type)
+        self.create_filtered_feed("feed/" + self.feed_type)
         # Only one article verifies the inclusion filter
         self.assertEqual(1, len(self.feed.items))
 
     def test_include_only_by_title(self):
-        self.context['FEED_FILTER'] = {
-            'feed/*': {
-                'include.title': ['*05', '*06']
-            }
-        }
-        self.create_filtered_feed('feed/' + self.feed_type)
+        self.context["FEED_FILTER"] = {"feed/*": {"include.title": ["*05", "*06"]}}
+        self.create_filtered_feed("feed/" + self.feed_type)
         # Only one article verifies the inclusion filter
         self.assertEqual(2, len(self.feed.items))
 
     def test_multiple_includes(self):
-        self.context['FEED_FILTER'] = {
-            'feed/*': {
-                'include.title': '*05',
-                'include.categories': 'Tag 02',
-            }
+        self.context["FEED_FILTER"] = {
+            "feed/*": {"include.title": "*05", "include.categories": "Tag 02"}
         }
-        self.create_filtered_feed('feed/' + self.feed_type)
+        self.create_filtered_feed("feed/" + self.feed_type)
         # Two articles verifies the inclusion filter
         self.assertEqual(2, len(self.feed.items))
 
     def test_exclude_only_by_category(self):
-        self.context['FEED_FILTER'] = {
-            'feed/*': {
-                'exclude.categories': 'Tag 1?'
-            }
-        }
-        self.create_filtered_feed('feed/' + self.feed_type)
+        self.context["FEED_FILTER"] = {"feed/*": {"exclude.categories": "Tag 1?"}}
+        self.create_filtered_feed("feed/" + self.feed_type)
         # Articles with Tag 10, 11, 12, ... 19, are excluded from the feed
         self.assertEqual(90, len(self.feed.items))
 
     def test_multiple_excludes(self):
-        self.context['FEED_FILTER'] = {
-            'feed/*': {
-                'exclude.categories': 'Tag 1?',
-                'exclude.title': '*2?',
-            }
+        self.context["FEED_FILTER"] = {
+            "feed/*": {"exclude.categories": "Tag 1?", "exclude.title": "*2?"}
         }
-        self.create_filtered_feed('feed/' + self.feed_type)
+        self.create_filtered_feed("feed/" + self.feed_type)
         # Articles with Tag 10, 11, 12, ... 19, 20, 21, ..., 29 are excluded
         self.assertEqual(80, len(self.feed.items))
 
     def test_include_exclude_by_author(self):
-        self.context['FEED_FILTER'] = {
-            'feed/category.*': {
-                'exclude.author_name': 'Author 4',  # excludes 10 articles
-                'include.title': 'Title 43',  # except the one with this title
+        self.context["FEED_FILTER"] = {
+            "feed/category.*": {
+                "exclude.author_name": "Author 4",  # excludes 10 articles
+                "include.title": "Title 43",  # except the one with this title
             }
         }
-        self.create_filtered_feed('feed/category.' + self.feed_type)
+        self.create_filtered_feed("feed/category." + self.feed_type)
         self.assertEqual(91, len(self.feed.items))
 
     def test_exclude_yesterday_article(self):
-        self.context['FEED_FILTER'] = {
-            'feed/category.*': {
-                'exclude.pubdate':
-                    (datetime.now() - timedelta(days=1)).strftime('*%d %b*'),
+        self.context["FEED_FILTER"] = {
+            "feed/category.*": {
+                "exclude.pubdate": (datetime.now() - timedelta(days=1)).strftime(
+                    "*%d %b*"
+                )
             }
         }
-        self.create_filtered_feed('feed/category.' + self.feed_type)
+        self.create_filtered_feed("feed/category." + self.feed_type)
         self.assertEqual(99, len(self.feed.items))
 
     def test_multiple_inclusions_and_exclusions(self):
-        self.context['FEED_FILTER'] = {
-            'feed/category.*': {
-                'exclude.author_name': 'Author 4',
-                'exclude.categories': '*3?',
-                'include.title': 'Title 43',
-                'include.categories': '*33',
+        self.context["FEED_FILTER"] = {
+            "feed/category.*": {
+                "exclude.author_name": "Author 4",
+                "exclude.categories": "*3?",
+                "include.title": "Title 43",
+                "include.categories": "*33",
             }
         }
-        self.create_filtered_feed('feed/category.' + self.feed_type)
+        self.create_filtered_feed("feed/category." + self.feed_type)
         self.assertEqual(82, len(self.feed.items))
 
 
 class RssFeedFilterTestCase(FeedFilterTestBase, unittest.TestCase):
-    feed_type = 'rss'
+    feed_type = "rss"
 
 
 class AtomFeedFilterTestCase(FeedFilterTestBase, unittest.TestCase):
-    feed_type = 'atom'
+    feed_type = "atom"
