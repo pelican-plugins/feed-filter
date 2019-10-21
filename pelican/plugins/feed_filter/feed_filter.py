@@ -29,11 +29,15 @@ def initialized(pelican):
 
 
 def filter_feeds(context, feed):
+    if len(feed.items) == 0:
+        return
     feed_filters = context["FEED_FILTER"]
     for feed_path_pattern, filters in feed_filters.items():
         feed_path = get_path_from_feed_url(feed)
         if fnmatch(feed_path, feed_path_pattern):
-            apply_filters_to_feed(feed, filters)
+            inclusion, exclusion = build_patterns(feed, filters)
+            if len(inclusion) or len(exclusion):
+                apply_patterns_to_feed(feed, inclusion, exclusion)
 
 
 def get_path_from_feed_url(feed):
@@ -46,10 +50,7 @@ def get_path_from_feed_url(feed):
     return feed_path
 
 
-def apply_filters_to_feed(feed, filters):
-    if len(feed.items) == 0:
-        return
-
+def build_patterns(feed, filters):
     inclusion, exclusion = dict(), dict()
     for f, value_pattern in filters.items():
         f_type, f_attr = f.split(".")
@@ -62,10 +63,10 @@ def apply_filters_to_feed(feed, filters):
             exclusion[f_attr] = value_pattern
         else:
             warning("feed_filter plugin: invalid filter type (%s)", f)
+    return inclusion, exclusion
 
-    if len(inclusion) == 0 and len(exclusion) == 0:
-        return
 
+def apply_patterns_to_feed(feed, inclusion, exclusion):
     new_items = []
     for item in feed.items:
         add_it = True if len(exclusion) > 0 else False

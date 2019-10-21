@@ -70,6 +70,14 @@ class FeedFilterTestBase(object):
         # No article was removed from the feed
         self.assertEqual(100, len(self.feed.items))
 
+    def test_matching_feeds_but_unmatched_patterns_do_nothing(self):
+        self.context["FEED_FILTER"] = {
+            "feed/*": {"include.bad_attribute": "*1", "exclude.also_bad": "*"}
+        }
+        self.create_filtered_feed("feed/" + self.feed_type)
+        # No article was removed from the feed
+        self.assertEqual(100, len(self.feed.items))
+
     def test_only_matched_feed_paths_are_applied(self):
         self.context["FEED_FILTER"] = {
             "feed/global": {"include.title": "*02"},  # does not match
