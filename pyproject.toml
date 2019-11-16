@@ -6,8 +6,10 @@ authors = ["David Alfonso <developer@davidalfonso.es>"]
 license = "AGPL-3.0"
 readme = "README.md"
 keywords = ["pelican", "plugin"]
-
 repository = "https://github.com/pelican-plugins/feed-filter"
+packages = [
+    { include = "pelican" },
+]
 
 classifiers = [
     "Development Status :: 5 - Production/Stable",
