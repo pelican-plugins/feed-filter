@@ -1,5 +1,7 @@
 # Feed Filter
 
+[![Build Status](https://github.com/pelican-plugins/feed-filter/workflows/build/badge.svg)](https://github.com/pelican-plugins/feed-filter/actions)
+
 Feed Filter is a Pelican plugin that filters elements from feeds.
 
 Installation
