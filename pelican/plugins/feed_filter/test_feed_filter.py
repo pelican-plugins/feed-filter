@@ -3,10 +3,11 @@
 from datetime import datetime, timedelta
 import unittest
 
-import feed_filter
 from pelican.contents import Article, Author, Category
 from pelican.tests.support import get_context, get_settings
 from pelican.writers import Writer
+
+import feed_filter
 
 
 class FeedFilterTestBase(object):
