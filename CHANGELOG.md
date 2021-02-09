@@ -5,4 +5,3 @@ CHANGELOG
 ------------------
 
 Initial release as versioned package distribution.
-
