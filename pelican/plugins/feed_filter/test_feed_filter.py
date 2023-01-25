@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Tests for the Feed Filter Plugin."""
 from datetime import datetime, timedelta
 import unittest
@@ -10,7 +9,7 @@ from pelican.writers import Writer
 import feed_filter
 
 
-class FeedFilterTestBase(object):
+class FeedFilterTestBase:
     @classmethod
     def setUpClass(cls):
         feed_filter.initialized(None)
@@ -34,13 +33,13 @@ class FeedFilterTestBase(object):
                 Article(
                     "Some content",
                     metadata={
-                        "Title": "Title " + "{:02n}".format(i),
+                        "Title": "Title " + f"{i:02n}",
                         "Date": date,
                         "Category": Category("Cat", self.context),
                         "Tags": [
                             "TagBecomesCategoryInFeed",
                             "OtherTag",
-                            "Tag " + "{:02n}".format(i),
+                            "Tag " + f"{i:02n}",
                         ],
                         "Author": Author("Author " + str(i // 10), self.context),
                     },
