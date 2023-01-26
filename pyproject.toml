@@ -29,15 +29,13 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
-"Documentation" = "https://docs.getpelican.com/"
 "Funding" = "https://donate.getpelican.com/"
-"Source" = "https://github.com/pelican-plugins/feed-filter"
-"Tracker" = "https://github.com/pelican-plugins/feed-filter/issues"
+"Issue Tracker" = "https://github.com/pelican-plugins/feed-filter/issues"
 
 [tool.poetry.dependencies]
 python = ">=3.7,<4.0"
 pelican = "^4.5"
-markdown = {version = "^3.2.2", optional = true}
+markdown = {version = "^3.2", optional = true}
 
 [tool.poetry.dev-dependencies]
 black = "^22"
@@ -60,6 +58,7 @@ markdown = ["markdown"]
 project-name = "Feed Filter"
 git-username = "botpub"
 git-email = "botpub@autopub.rocks"
+append-github-contributor = true
 
 [tool.isort]
 # Maintain compatibility with Black
