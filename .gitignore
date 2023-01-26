@@ -1,1 +1,6 @@
-poetry.lock
+*.swp
+*.egg-info
+venv
+.venv
+tags
+.python-version
