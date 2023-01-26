@@ -1,6 +1,7 @@
 # Feed Filter
 
-[![Build Status](https://github.com/pelican-plugins/feed-filter/workflows/build/badge.svg)](https://github.com/pelican-plugins/feed-filter/actions) [![PyPI Version](https://img.shields.io/pypi/v/pelican-feed-filter)](https://pypi.org/project/pelican-feed-filter/)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/pelican-plugins/feed-filter/main.yml?branch=master)](https://github.com/pelican-plugins/feed-filter/actions)
+[![PyPI Version](https://img.shields.io/pypi/v/pelican-feed-filter)](https://pypi.org/project/pelican-feed-filter/)
 
 Feed Filter is a Pelican plugin that filters elements from feeds.
 
