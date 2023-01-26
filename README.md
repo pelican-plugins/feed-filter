@@ -10,10 +10,11 @@ Installation
 
 This plugin can be installed via:
 
-    pip install pelican-feed-filter
+    python -m pip install pelican-feed-filter
 
 Usage
 -----
+
 This plugin is configured through your Pelican configuration file, by setting the following variable:
 
 `FEED_FILTER = {}`
