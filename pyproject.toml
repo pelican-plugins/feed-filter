@@ -29,8 +29,8 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
-pelican = "^4.5"
-markdown = {version = "^3.2", optional = true}
+pelican = ">=4.5"
+markdown = {version = ">=3.2", optional = true}
 
 [tool.poetry.dev-dependencies]
 black = "^23"
