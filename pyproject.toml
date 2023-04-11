@@ -7,6 +7,7 @@ license = "AGPL-3.0"
 readme = "README.md"
 keywords = ["pelican", "plugin"]
 repository = "https://github.com/pelican-plugins/feed-filter"
+documentation = "https://docs.getpelican.com"
 packages = [
     { include = "pelican" },
 ]
@@ -17,13 +18,7 @@ classifiers = [
     "Framework :: Pelican",
     "Framework :: Pelican :: Plugins",
     "Intended Audience :: End Users/Desktop",
-    "License :: OSI Approved :: GNU Affero General Public License v3",
     "Operating System :: OS Independent",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
