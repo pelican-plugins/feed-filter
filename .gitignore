@@ -4,3 +4,4 @@ venv
 .venv
 tags
 .python-version
+poetry.lock
