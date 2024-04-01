@@ -4,6 +4,7 @@ Feed Filter plugin for Pelican
 
 A plugin to filter feed elements using custom filters.
 """
+
 from datetime import datetime
 from fnmatch import fnmatch
 from logging import warning
