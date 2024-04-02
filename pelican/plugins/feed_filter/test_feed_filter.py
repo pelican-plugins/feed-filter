@@ -1,4 +1,5 @@
 """Tests for the Feed Filter Plugin."""
+
 from datetime import datetime, timedelta
 import unittest
 
